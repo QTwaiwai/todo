@@ -13,22 +13,30 @@
         android:theme="@style/Theme.Todo"
         tools:targetApi="31">
         <activity
-            android:name=".TodoListActivity"
-            android:exported="false" />
+            android:name=".ui.AddActivity"
+            android:exported="true" >
+        </activity>
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.TodoListActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true">
 
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
         </activity>
+
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

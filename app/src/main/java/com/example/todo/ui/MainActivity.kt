@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.ui
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todo.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mEtUsername: EditText
@@ -25,11 +26,11 @@ class MainActivity : AppCompatActivity() {
     }
 
    private fun initView() {
-       mEtUsername=findViewById(R.id.main_et_username)
-       mEtPassword=findViewById(R.id.main_et_password)
-       mBtnLogin=findViewById(R.id.main_btn_login)
-       mBtnRegister=findViewById(R.id.main_btn_register)
-       mCbRemember=findViewById(R.id.main_cb_remember)
+       mEtUsername=findViewById(R.id.et_main_username)
+       mEtPassword=findViewById(R.id.et_main_password)
+       mBtnLogin=findViewById(R.id.btn_main_login)
+       mBtnRegister=findViewById(R.id.btn_main_register)
+       mCbRemember=findViewById(R.id.cb_main_remember)
        longinPreference=getSharedPreferences("remember",Context.MODE_PRIVATE)
        if(longinPreference.getBoolean("remember_password",false)){
            val username = longinPreference.getString("username","")
@@ -70,8 +71,8 @@ class MainActivity : AppCompatActivity() {
     private fun loginSuccess() {
         val editor = longinPreference.edit()
         if (mCbRemember.isChecked) {
-            editor.putString("username", mEtUsername.getText().toString())
-            editor.putString("password", mEtPassword.getText().toString())
+            editor.putString("username", mEtUsername.text.toString())
+            editor.putString("password", mEtPassword.text.toString())
             editor.putBoolean("remember_password", mCbRemember.isChecked)
         } else {
             editor.clear()

@@ -1,12 +1,12 @@
-package com.example.todo
+package com.example.todo.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todo.R
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -22,13 +22,14 @@ class RegisterActivity : AppCompatActivity() {
     //初始相应的UI
     private fun initView() {
         mBtnRegister = findViewById(R.id.register_btn_register)
-        mEtUsername = findViewById(R.id.register_et_username)
-        mEtPassword = findViewById(R.id.register_et_password)
+        mEtUsername = findViewById(R.id.et_register_username)
+        mEtPassword = findViewById(R.id.et_register_password)
         mBtnRegister.setOnClickListener{
             val editor = getSharedPreferences("code", Context.MODE_PRIVATE).edit()
             editor.putString("username", mEtUsername.text.toString())
             editor.putString("password", mEtPassword.text.toString())
             editor.apply()
+            Toast.makeText(this, "注册成功!", Toast.LENGTH_SHORT).show()
             finish()
         }
     }

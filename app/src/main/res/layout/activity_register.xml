@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
     <EditText
-        android:id="@+id/register_et_password"
+        android:id="@+id/et_register_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints="password"
@@ -22,14 +22,14 @@
         app:layout_constraintVertical_bias="0.472" />
 
     <EditText
-        android:id="@+id/register_et_username"
+        android:id="@+id/et_register_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/username"
         android:autofillHints="username"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/register_et_password"
+        app:layout_constraintBottom_toTopOf="@+id/et_register_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_password"
-        app:layout_constraintStart_toStartOf="@+id/register_et_password"/>
+        app:layout_constraintTop_toBottomOf="@+id/et_register_password"
+        app:layout_constraintStart_toStartOf="@+id/et_register_password"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
