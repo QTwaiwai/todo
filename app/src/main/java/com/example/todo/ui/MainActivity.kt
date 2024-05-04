@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todo.R
 
@@ -49,10 +51,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun register() {
         val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+        launchForResult.launch(intent)
     }
 
-    private fun login() {
+    private val launchForResult: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val data= result.data
+            val username=data?.getStringExtra("用户名")
+            val password=data?.getStringExtra("密码")
+            if (result.resultCode== RESULT_OK){
+                mEtUsername.setText(username)
+                mEtPassword.setText(password)
+            }
+        }
+
+
+        private fun login() {
         val codeSp=getSharedPreferences("code",Context.MODE_PRIVATE)
         val tureUsername=codeSp.getString("username","")
         val turePassword=codeSp.getString("password","")

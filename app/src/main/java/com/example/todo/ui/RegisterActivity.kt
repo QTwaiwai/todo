@@ -1,6 +1,7 @@
 package com.example.todo.ui
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -29,6 +30,12 @@ class RegisterActivity : AppCompatActivity() {
             editor.putString("username", mEtUsername.text.toString())
             editor.putString("password", mEtPassword.text.toString())
             editor.apply()
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("用户名", mEtUsername.text.toString())
+                putExtra("密码",mEtPassword.text.toString())
+            }
+            setResult(RESULT_OK, intent)
+            finish()
             Toast.makeText(this, "注册成功!", Toast.LENGTH_SHORT).show()
             finish()
         }
