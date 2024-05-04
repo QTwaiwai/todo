@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -72,13 +71,17 @@ class TodoListActivity : AppCompatActivity() {
                 val note = NoteData(content!!,date!!,1)
                 val op= CRUD(applicationContext)
                 op.open()
-
-            if (result.resultCode == Activity.RESULT_FIRST_USER) {
-                op.addNote(note)
-            }
-            else if (result.resultCode == Activity.RESULT_OK){
-                op.updateNote(note)
-            }
+                when(result.resultCode){
+                    Activity.RESULT_FIRST_USER->{
+                        op.addNote(note)
+                    }
+                    Activity.RESULT_OK -> {
+                        op.updateNote(note)
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        op.deleteNote(note)
+                    }
+                }
                 op.close()
                 refreshListView()
             }
@@ -100,6 +103,7 @@ class TodoListActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun refreshListView(){
         val op= CRUD(applicationContext)
         op.open()
