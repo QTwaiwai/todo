@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -32,10 +33,22 @@ class TodoListActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
+        initData()
         initRv()
         initClick()
+    }
+
+    private fun initData() {
+        val op= CRUD(applicationContext)
+        op.open()
+        if(_noteList.size>0){
+            _noteList.clear()
+        }
+        _noteList.addAll(op.getAllNotes())
+        op.close()
     }
 
     private fun initClick() {
@@ -50,7 +63,7 @@ class TodoListActivity : AppCompatActivity() {
 
     private val launchForResult: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+
                 val data= result.data
                 // 从data Intent中提取数据
                 val content = data?.getStringExtra("笔记内容")
@@ -59,25 +72,39 @@ class TodoListActivity : AppCompatActivity() {
                 val note = NoteData(content!!,date!!,1)
                 val op= CRUD(applicationContext)
                 op.open()
+
+            if (result.resultCode == Activity.RESULT_FIRST_USER) {
                 op.addNote(note)
+            }
+            else if (result.resultCode == Activity.RESULT_OK){
+                op.updateNote(note)
+            }
                 op.close()
                 refreshListView()
-            } 
-        }
+            }
+
 
     private fun initRv(){
         mAdapter = NoteRvAdapter(this,noteList)
         mBinding.rvTodolist.apply {
             layoutManager=LinearLayoutManager(this@TodoListActivity)
-            adapter=mAdapter
+            adapter=mAdapter.apply {
+                setOnItemClickListener {
+                    val intent = Intent(this@TodoListActivity, ChangeActivity::class.java).apply {
+                        putExtra("笔记内容", _noteList[it].content)
+                        putExtra("笔记时间", _noteList[it].time)
+                    }
+                    launchForResult.launch(intent)
+                }
+            }
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun refreshListView(){
         val op= CRUD(applicationContext)
         op.open()
         if(_noteList.size>0){
-            _noteList.clear()
+                _noteList.clear()
         }
         _noteList.addAll(op.getAllNotes())
         op.close()
