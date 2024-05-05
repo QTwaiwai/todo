@@ -7,10 +7,12 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.CRUD
 import com.example.todo.R
 import com.example.todo.adapter.NoteRvAdapter
+import com.example.todo.adapter.SimpleItemTouchHelperCallback
 import com.example.todo.bean.NoteData
 import com.example.todo.databinding.ActivityTodolistBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,6 +30,8 @@ class TodoListActivity : AppCompatActivity() {
     }
 
     private lateinit var mAdapter: NoteRvAdapter
+    private lateinit var callback: SimpleItemTouchHelperCallback
+    private lateinit var touchHelper: ItemTouchHelper
 
 
 
@@ -89,6 +93,9 @@ class TodoListActivity : AppCompatActivity() {
 
     private fun initRv(){
         mAdapter = NoteRvAdapter(this,noteList)
+        callback = SimpleItemTouchHelperCallback(mAdapter)
+        touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(mBinding.rvTodolist)
         mBinding.rvTodolist.apply {
             layoutManager=LinearLayoutManager(this@TodoListActivity)
             adapter=mAdapter.apply {

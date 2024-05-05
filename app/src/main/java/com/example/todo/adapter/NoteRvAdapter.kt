@@ -10,11 +10,13 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo.CRUD
 import com.example.todo.R
 import com.example.todo.bean.NoteData
+import java.util.Collections
 
 class NoteRvAdapter(context: Context, noteList: MutableList<NoteData>) :Filterable,
-    RecyclerView.Adapter<NoteRvAdapter.SimpleViewHolder>() {
+    RecyclerView.Adapter<NoteRvAdapter.SimpleViewHolder>(), ItemTouchHelperAdapter{
     private val mContext:Context = context
     private val backList=noteList//备份数据
     private  var mNoteList: MutableList<NoteData> = noteList
@@ -92,6 +94,16 @@ class NoteRvAdapter(context: Context, noteList: MutableList<NoteData>) :Filterab
 
     }
 
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+         Collections.swap(mNoteList,fromPosition,toPosition)
+        notifyItemMoved(fromPosition,toPosition)
+    }
 
-
+    override fun onItemDismiss(position: Int) {
+        mNoteList.removeAt(position)
+        val op= CRUD(mContext)
+        op.open()
+        op.deleteNote(mNoteList[position])
+        notifyItemRemoved(position)
+    }
 }
