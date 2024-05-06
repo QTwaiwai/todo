@@ -100,10 +100,10 @@ class NoteRvAdapter(context: Context, noteList: MutableList<NoteData>) :Filterab
     }
 
     override fun onItemDismiss(position: Int) {
-        mNoteList.removeAt(position)
         val op= CRUD(mContext)
         op.open()
         op.deleteNote(mNoteList[position])
         notifyItemRemoved(position)
+        mNoteList.removeAt(position)
     }
 }
